@@ -42,7 +42,7 @@ class YTTableViewController: UITableViewController, UISearchBarDelegate {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
 
-        var youtube:WebServices.YoutubeVideo = self.youtubeResults[indexPath.row]
+        let youtube:WebServices.YoutubeVideo = self.youtubeResults[indexPath.row]
         cell.textLabel?.text = youtube.title
         // Configure the cell...
 
@@ -50,15 +50,15 @@ class YTTableViewController: UITableViewController, UISearchBarDelegate {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var youtube:WebServices.YoutubeVideo = self.youtubeResults[indexPath.row]
+        //var youtube:WebServices.YoutubeVideo = self.youtubeResults[indexPath.row]
         self .performSegueWithIdentifier("showDetail", sender: self)
 
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "showDetail") {
-            let viewController:DetailViewController = segue.destinationViewController as DetailViewController
-            let indexPath:NSIndexPath = self.tableView.indexPathForSelectedRow()!
+            let viewController:DetailViewController = segue.destinationViewController as! DetailViewController
+            let indexPath:NSIndexPath = self.tableView.indexPathForSelectedRow!
             viewController.youtubeVideo = self.youtubeResults[indexPath.row]
         }
     }
@@ -67,8 +67,8 @@ class YTTableViewController: UITableViewController, UISearchBarDelegate {
         let webSerivce = WebServices()
         activityIndicatior.startAnimating()
 
-        webSerivce .performSearch(searchBar.text, completion: { (items, error:NSError?) -> Void in
-            println(items)
+        webSerivce .performSearch(searchBar.text!, completion: { (items, error:NSError?) -> Void in
+            print(items)
             
             dispatch_async(dispatch_get_main_queue(), {
                 if (error != nil) {

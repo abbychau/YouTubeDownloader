@@ -14,13 +14,13 @@ class LocalFilesTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        var paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as String
-        var path = paths.stringByAppendingPathComponent("data.plist")
-        var array: AnyObject? = NSKeyedUnarchiver.unarchiveObjectWithFile(path)
-        youtubeResults = array as [WebServices.YoutubeVideo]!
+        let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as NSString
+        let path = paths.stringByAppendingPathComponent("data.plist")
+        let array: AnyObject? = NSKeyedUnarchiver.unarchiveObjectWithFile(path)
+        youtubeResults = array as! [WebServices.YoutubeVideo]!
         
         self.tableView .reloadData()
-        println(array)
+        print(array)
     }
 
     override func didReceiveMemoryWarning() {
@@ -41,7 +41,7 @@ class LocalFilesTableViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as UITableViewCell
-        var youtube:WebServices.YoutubeVideo = self.youtubeResults[indexPath.row]
+        let youtube:WebServices.YoutubeVideo = self.youtubeResults[indexPath.row]
         cell.textLabel?.text = youtube.title
 
         
@@ -50,15 +50,15 @@ class LocalFilesTableViewController: UITableViewController {
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        var youtube:WebServices.YoutubeVideo = self.youtubeResults[indexPath.row]
+        //var youtube:WebServices.YoutubeVideo = self.youtubeResults[indexPath.row]
         self .performSegueWithIdentifier("showDetail", sender: self)
         
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if (segue.identifier == "showDetail") {
-            let viewController:DetailViewController = segue.destinationViewController as DetailViewController
-            let indexPath:NSIndexPath = self.tableView.indexPathForSelectedRow()!
+            let viewController:DetailViewController = segue.destinationViewController as! DetailViewController
+            let indexPath:NSIndexPath = self.tableView.indexPathForSelectedRow!
             viewController.youtubeVideo = self.youtubeResults[indexPath.row]
         }
     }
